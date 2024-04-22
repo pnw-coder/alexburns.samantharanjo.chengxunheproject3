@@ -20,7 +20,7 @@ function deletePassword(id) {
     return PasswordModel.deleteOne({_id: id})
 }
 
-function updatePassword(id, pokemon) {
+function updatePassword(id, password) {
     return PasswordModel.findOneAndUpdate({_id: id}, password)
 }
 
