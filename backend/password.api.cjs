@@ -42,9 +42,10 @@ router.post('/', async function(req, res) {
 router.get('/', async function (req, res) {
     try {
         const passwords = await PasswordModel.getAllPasswords();
-        res.json(passwords);
+        return res.send(passwords);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error'});
+        res.status(500);
+        return res.send('Internal server error');
     }
 });
 
@@ -54,12 +55,14 @@ router.get('/:id', async function(req, res) {
     try {
         const password = await PasswordModel.getPasswordById(passwordId);
         if (!password) {
-            res.status(404).json({ error: 'Password not found' });
+            res.status(404);
+            return res.send('Password not found');
         } else {
-            res.json(password);
+            return res.send(password);
         }
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500);
+        return res.send(error);
     }
 });
 
@@ -70,9 +73,10 @@ router.put('/:id', async function(req, res) {
     
     try {
         const updatedPassword = await PasswordModel.updatePassword(passwordId, requestBody);
-        res.json(updatedPassword);
+        return res.send('Password updated successfully');
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error '});
+        res.status(400);
+        return res.send(error);
     }
 });
 
@@ -82,9 +86,10 @@ router.delete('/:id', async function(req, res) {
 
     try {
         await PasswordModel.deletePassword(passwordId);
-        res.json({ message: 'Password deleted successfully '});
+        return res.send('Password deleted successfully');
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error'});
+        res.status(500);
+        return res.send(error);
     }
 });
 
