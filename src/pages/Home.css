@@ -1,0 +1,26 @@
+.Home {
+    padding: 10px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.title-home {
+    color: rgb(150, 150, 228);;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.password-home{
+    color: teal;
+    font-size: 20px;
+    font-weight: bold;
+
+}
+
+.creators-credit{
+    color: rgb(150, 150, 228);;
+    font-size: 20x;
+    font-weight: bold;
+}
+
