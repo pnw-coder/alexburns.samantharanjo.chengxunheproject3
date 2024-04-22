@@ -3,7 +3,7 @@ const cookieHelper = require('./cookie.helper.cjs');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const router = express.router();
+const router = express.Router();
 
 const userModel = require('./db/user.model.cjs');
 
