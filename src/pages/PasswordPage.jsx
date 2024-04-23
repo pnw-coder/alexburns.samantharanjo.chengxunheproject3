@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
+import './PasswordPage.css';
 
 function PasswordPage() {
     const navigate = useNavigate();
@@ -129,7 +130,7 @@ function PasswordPage() {
 
     async function isLoggedIn() {
         try {
-            const response = await axios.get('/api/user/loggedIn');
+            const response = await axios.get('/api/users/loggedIn');
             const username = response.data.username;
             setUsername(username);
         } catch (e) {
