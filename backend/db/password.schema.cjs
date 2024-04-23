@@ -9,6 +9,7 @@ module.exports = new Schema ({
         type: String,
         required: true,
     },
+    user: String,
     created: {
         type: Date,
         default: Date.now
