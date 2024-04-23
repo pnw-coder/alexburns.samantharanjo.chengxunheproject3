@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './Signup.css';
 
 const Signup = () => {
@@ -7,7 +8,7 @@ const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!username.trim()) {
@@ -26,10 +27,19 @@ const Signup = () => {
         }
 
         // Perform signup logic here (e.g., make API request to create new user)
+        try {
+            await axios.post('/api/users/register', {
+                username: username,
+                password: password,
+            });
+
+            setUsername('');
+            setPassword('');
+        } catch (error) {
+            setError(error.response.data);
+        }
 
         // if signup a success, clear form fields and error state
-        setUsername('');
-        setPassword('');
         setConfirmPassword(''); 
         setError('');
     }
