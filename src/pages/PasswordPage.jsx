@@ -41,6 +41,15 @@ function PasswordPage() {
             
             // If in editing mode, update the existing password
             if (editingState.isEditing) {
+                const existingPassword = passwordListState.find(password => password._id === editingState.editingPasswordId);
+                if (!existingPassword) {
+                    throw new Error('Password not found.');
+                }
+
+                if (existingPassword.user !== username) {
+                    throw new Error('You do not own this password.');
+                }
+                // Update the password
                 await axios.put('/api/password/' + editingState.editingPasswordId, {
                     website: websiteNameState,
                     body: passwordToSubmit,
@@ -156,7 +165,7 @@ function PasswordPage() {
     }
 
     return (
-        <div>
+        <div className='password-manager-container'>
             <div>
                 <button onClick={logout}>Logout</button>
 
@@ -176,6 +185,32 @@ function PasswordPage() {
                 </div>
                 <div>
                     <label>Password:</label> <input value={passwordBodyState} onInput={(event) => updatePasswordBody(event)}/>
+                </div>
+                <div>
+                    <div>
+                        <input 
+                            type="number"
+                            min="4"
+                            max="50"
+                            value={passwordLength}
+                            onChange={(event) => setPasswordLength(parseInt(event.target.value))}
+                        />
+                        <label>Password Length (4-50):</label>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" checked={alphabetCheckbox} onChange={() => setAlphabetCheckbox(!alphabetCheckbox)} />
+                        <label>Include Alphabet</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" checked={numeralsCheckbox} onChange={() => setNumeralsCheckbox(!numeralsCheckbox)} />
+                        <label>Include Numerals</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" checked={symbolsCheckbox} onChange={() => setSymbolsCheckbox(!symbolsCheckbox)} />
+                        <label>Include Symbols</label>
+                    </div>
                 </div>
                 <div>
                     <button onClick={() => onSubmit()}>Submit</button>

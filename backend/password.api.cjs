@@ -4,10 +4,6 @@ const express = require('express');
 const router = express.Router();
 const PasswordModel = require('./db/password.model.cjs');
 
-let passwordTest = [
-    {website: "Amazon", body: "1234test!"},
-    {website: "Facebook", body: "23@test!"},
-];
 
 // POST /api/password - Insert a new password
 router.post('/', async function(req, res) {
@@ -27,6 +23,7 @@ router.post('/', async function(req, res) {
     const newPassword ={
         website: requestBody.website,
         body: requestBody.body,
+        user: username,
     }
 
     try {
@@ -70,9 +67,26 @@ router.get('/:id', async function(req, res) {
 router.put('/:id', async function(req, res) {
     const passwordId = req.params.id;
     const requestBody = req.body;
+    const username = cookieHelper.cookieDecryptor(req);
+
+    if (!username) {
+        res.status(400);
+        return res.send("You need to be logged in to create a password.")
+    }
+
+    if (!requestBody.website || !requestBody.body) {
+        res.status(400);
+        return res.send("You need to include a website and password in your request");
+    }
     
     try {
-        const updatedPassword = await PasswordModel.updatePassword(passwordId, requestBody);
+        const getPasswordResponse = await PasswordModel.getPasswordById(passwordId);
+        if(getPasswordResponse !== null && getPasswordResponse.user !== username) {
+            res.status(400);
+            return res.send("You do not own this password.");
+        }
+
+        const passwordUpdateResponse = await PasswordModel.updatePassword(passwordId, requestBody);
         return res.send('Password updated successfully');
     } catch (error) {
         res.status(400);
@@ -83,6 +97,7 @@ router.put('/:id', async function(req, res) {
 // DELETE /api/password/:id - Delete a password
 router.delete('/:id', async function(req, res) {
     const passwordId = req.params.id;
+    const username = cookieHelper.cookieDecryptor(req);
 
     try {
         await PasswordModel.deletePassword(passwordId);
