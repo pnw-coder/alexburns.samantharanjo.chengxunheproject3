@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
-const Login = ({ history }) => {
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,7 +31,7 @@ const Login = ({ history }) => {
 
             // If log is successful, redirect to password manager page
             if (response.status === 200) {
-                history.push('/passwordpage');
+                navigate('/passwordpage');
             } else {
                 setError('Username and/or password is invalid.');
             }

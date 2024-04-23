@@ -130,7 +130,7 @@ function PasswordPage() {
 
     async function isLoggedIn() {
         try {
-            const response = await axios.get('/api/user/loggedIn');
+            const response = await axios.get('/api/users/loggedIn');
             const username = response.data.username;
             setUsername(username);
         } catch (e) {
