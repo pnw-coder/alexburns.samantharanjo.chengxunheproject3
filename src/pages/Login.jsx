@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './Login.css';
+import axios from 'axios';
 
 const Login = ({ history }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         //username empty?
@@ -22,17 +23,30 @@ const Login = ({ history }) => {
         }
 
         //login logic here (e.g., make API request to validate user credentials)
+        try {
+            // Send a POST request to the login endpoint
+            const response = await axios.post('/api/users/login', { username, password });
 
-        //assuming login is successful if username is not empty
-        if (username) {
-            // Redirect to password manager page
-            history.push('/password-manager');
-            // CHANGE TO PASSWORD MANAGER NAME OF PAGE
-        
-        } else {
-            //username empty/doesn't exist
-            setError("username and/or password is invalid!");
+            // If log is successful, redirect to password manager page
+            if (response.status === 200) {
+                history.push('/passwordpage');
+            } else {
+                setError('Username and/or password is invalid.');
+            }
+        } catch (error) {
+            setError(error.response.data);
         }
+
+        // //assuming login is successful if username is not empty
+        // if (username) {
+        //     // Redirect to password manager page
+        //     history.push('/password-manager');
+        //     // CHANGE TO PASSWORD MANAGER NAME OF PAGE
+        
+        // } else {
+        //     //username empty/doesn't exist
+        //     setError("username and/or password is invalid!");
+        // }
     }
 
     return (

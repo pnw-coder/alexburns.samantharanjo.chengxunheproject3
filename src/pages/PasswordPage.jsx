@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
+import './PasswordPage.css';
 
 function PasswordPage() {
     const navigate = useNavigate();
