@@ -3,13 +3,17 @@ const cookieHelper = require('./cookie.helper.cjs');
 const express = require('express');
 const router = express.Router();
 const PasswordModel = require('./db/password.model.cjs');
+const methodOverride = require('method-override');
+const app = express();
+
+app.use(express.urlencoded({extended: true}))
+app.use(methodOverride('_method'))
 
 
 // POST /api/password - Insert a new password
 router.post('/', async function(req, res) {
     const requestBody = req.body;
     const username = cookieHelper.cookieDecryptor(req);
-
     if (!username) {
         res.status(401);
         return res.send("You need to be logged in to create a password.")
