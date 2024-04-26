@@ -19,7 +19,7 @@ function PasswordPage() {
     });
     const [errorMsgState, setErrorMsgState] = useState('');
     const [username, setUsername] = useState('');
-    
+
     async function getAllPasswords() {
         const response = await axios.get('/api/password');
         setPasswordListState(response.data);
@@ -38,7 +38,7 @@ function PasswordPage() {
             }
 
             let passwordToSubmit = passwordBodyState;
-            
+
             // If in editing mode, update the existing password
             if (editingState.isEditing) {
                 const existingPassword = passwordListState.find(password => password._id === editingState.editingPasswordId);
@@ -118,9 +118,9 @@ function PasswordPage() {
 
     function onStart() {
         isLoggedIn()
-        .then(() => {
-            getAllPasswords()
-        })
+            .then(() => {
+                getAllPasswords()
+            })
     }
 
     function onCancel() {
@@ -163,7 +163,27 @@ function PasswordPage() {
     if (!username) {
         return <div>Loading...</div>
     }
+    //--------
+    // const [sharedUsername, setSharedUsername] = useState('');
+    // const [sharedPasswords, setSharedPasswords] = useState([]);
+    // const [sharingStatus, setSharingStatus] = useState('');
+    // async function sharePasswords() {
+    //     try {
+    //         if (sharedUsername === username) {
+    //             throw new Error('You cannot share passwords with yourself.');
+    //         }
+    //         const response = await axios.post('/api/password/share', {
+    //             sharedUsername: sharedUsername
+    //         });
 
+    //         setSharedPasswords(response.data);
+    //         setSharedUsername('');
+    //         setSharingStatus(`Password shared with ${sharedUsername}`);
+    //     } catch (error) {
+    //         setSharingStatus(error.message);
+    //     }
+    // }
+    //--------
     return (
         <div className='password-manager-container'>
             <div>
@@ -181,14 +201,14 @@ function PasswordPage() {
             <div>{inputFieldTitleText}</div>
             <div>
                 <div>
-                    <label>Website:</label> <input value={websiteNameState} onInput={(event) => updatePasswordWebsite(event)}/>
+                    <label>Website:</label> <input value={websiteNameState} onInput={(event) => updatePasswordWebsite(event)} />
                 </div>
                 <div>
-                    <label>Password:</label> <input value={passwordBodyState} onInput={(event) => updatePasswordBody(event)}/>
+                    <label>Password:</label> <input value={passwordBodyState} onInput={(event) => updatePasswordBody(event)} />
                 </div>
                 <div>
                     <div>
-                        <input 
+                        <input
                             type="number"
                             min="4"
                             max="50"
@@ -217,8 +237,33 @@ function PasswordPage() {
                     <button onClick={() => onCancel()}>Cancel</button>
                 </div>
             </div>
+
+            {/* <div>
+                <div>
+                    <label>Enter Username to Share Passwords:</label>
+                    <input value={sharedUsername} onChange={(event) => setSharedUsername(event.target.value)} />
+                </div>
+                <button onClick={() => sharePasswords()}>Submit</button>
+                {sharingStatus && <div>{sharingStatus}</div>}
+            </div>
+
+            {sharedPasswords.length > 0 && (
+                <div>
+                    <h3>Shared Passwords:</h3>
+                    <ul>
+                        {sharedPasswords.map((password) => (
+                            <li key={password._id}>
+                                <span>{password.username}'s Password:</span>
+                                <span>{password.body}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )} */}
         </div>
     )
 }
+
+
 
 export default PasswordPage;

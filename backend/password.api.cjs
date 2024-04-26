@@ -112,4 +112,28 @@ router.delete('/:id', async function(req, res) {
     }
 });
 
+//-----
+// router.post('/share', async function(req, res) {
+//     const { sharedUsername } = req.body;
+//     const currentUser = cookieHelper.cookieDecryptor(req);
+
+//     try {
+//         const sharedUserExists = await checkUserExistence(sharedUsername);
+//         if (!sharedUserExists) {
+//             res.status(404);
+//             return res.send('Recipient user not found.');
+//         }
+
+//         const currentUserPasswords = await PasswordModel.getPasswordsByUser(currentUser);
+        
+//         await sharePasswords(currentUserPasswords, sharedUsername);
+
+//         res.status(200);
+//         return res.send('Passwords shared successfully');
+//     } catch (error) {
+//         res.status(500);
+//         return res.send(error);
+//     }
+// });
+//-----
 module.exports = router;
